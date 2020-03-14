@@ -42,3 +42,18 @@ npm start
 ```
 
 [http://localhost:8080/](http://localhost:8080/)にアクセス
+
+## 仕様
+
+- admin: 管理画面
+    - products: 商品のCRUD、在庫管理
+    - users; ユーザー一覧
+- users: ユーザー
+    - sign_up: 会員登録
+    - sign_in: ログイン
+- products: 商品
+    - index: 一覧、カート追加
+- cart: カート
+    - index: カートに追加した商品を表示、削除、数の変更
+    - confirm: 商品の購入
+    - finish: 購入完了
