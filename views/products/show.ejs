@@ -8,7 +8,7 @@
   <img src="<%= product.image %>" alt="<%= product.name %>">
   <p><%= product.price %>円</p>
   <p>残り<%= product.stock %>個</p>
-  <p>最終更新日：<%= product.updatedAt %></p>
+  <p>最終更新日：<%= product.updatedAt.toFormat('YYYY年M月D日 HH時MI分') %></p>
 <% } %>
 
 <% include ../layout/footer %>

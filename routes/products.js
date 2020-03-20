@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const db = require('../models/index');
+const dateUtils = require('date-utils');
 
 /* GET products listing. */
 router.get('/', function(req, res, next) {
@@ -23,7 +24,7 @@ router.get('/:productId/', function(req, res, next) {
     order: [['createdAt', 'DESC']]
   };
   db.products.findOne(options).then((results) => {
-    res.render('products/show', { product: results });
+    res.render('products/show', { product: results, dateUtils: dateUtils });
   });
 });
 
