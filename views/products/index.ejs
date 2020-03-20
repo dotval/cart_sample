@@ -1,0 +1,16 @@
+<% include ../layout/header %>
+
+<h1>商品一覧</h1>
+
+<ul>
+    <% products.map((product) => { %>
+        <li>
+            <h2>
+                <a href="/products/<%= product.id %>"><%= product.name %></a>
+            </h2>
+            <p>残り<%= product.stock %>個 / <%= product.price %>円</p>
+        </li>
+    <% }) %>
+</ul>
+
+<% include ../layout/footer %>
