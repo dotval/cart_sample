@@ -1,0 +1,14 @@
+<% include ../layout/header %>
+
+<% if (product == null) { %>
+  <p>この商品は削除されたか、非公開の商品です。</p>
+  <a href="/">商品一覧に戻る</a>
+<% } else { %>
+  <h1><%= product.name %></h1>
+  <img src="<%= product.image %>" alt="<%= product.name %>">
+  <p><%= product.price %>円</p>
+  <p>残り<%= product.stock %>個</p>
+  <p>最終更新日：<%= product.updatedAt.toFormat('YYYY年M月D日 HH時MI分') %></p>
+<% } %>
+
+<% include ../layout/footer %>
