@@ -4,11 +4,11 @@ const passport = require('passport');
 const users = require('../models/index').users;
 const bcrypt = require('bcrypt');
 
-router.get('/signup', function(req, res) {
-  res.render('users/signup');
+router.get('/sign_up', function(req, res) {
+  res.render('users/sign_up');
 });
 
-router.post('/signup', function(req, res) {
+router.post('/sign_up', function(req, res) {
   bcrypt.hash(req.body.password, 10, function (err, hashedPassword) {
     const param = {
       username: req.body.username,
@@ -25,16 +25,16 @@ router.post('/signup', function(req, res) {
   });
 });
 
-router.get('/signin', function(req, res, next) {
-  res.render('users/signin');
+router.get('/sign_in', function(req, res, next) {
+  res.render('users/sign_in');
 });
 
-router.post('/signin', passport.authenticate('local', {
+router.post('/sign_in', passport.authenticate('local', {
     successRedirect: '/products',
-    failureRedirect: '/users/signin'
+    failureRedirect: '/users/sign_in'
   }));
 
-router.get('/signout', function(req, res) {
+router.get('/sign_out', function(req, res) {
     req.logout();
     res.redirect('/');
 });
