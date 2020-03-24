@@ -6,6 +6,7 @@ const logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -49,11 +50,18 @@ passport.deserializeUser((id, done) => {
           where: { username: username }
         })
         .then(user => {
-          if (!user || !user.password === password) {
+          if (!user) {
             return done(null, false, { message: 'メールアドレスまたはパスワードが正しくありません。' })
           }
+          bcrypt.compare(password, user.password, function (err, result) {
+            console.log(result);
+            
+            if (!result) {
+              return done(null, false, { message: 'メールアドレスまたはパスワードが正しくありません。' })
+            }
 
-          return done(null, user)
+            return done(null, user)
+          });
         })
         .catch(error => {
           return done(error)
