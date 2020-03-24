@@ -61,7 +61,7 @@ npm start
     - index: マイページ
     - sign_up: 会員登録
     - sign_in: ログイン
-    - (password/reset): パスワードリセット
+    - sign_out: ログアウト
 - products: 商品
     - index: 一覧、検索
     - show: 商品詳細、カート追加
