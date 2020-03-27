@@ -1,0 +1,32 @@
+<% include ../layout/header %>
+
+<h1>レジ</h1>
+<table>
+    <tr>
+        <th>商品名</th>
+        <th>個数</th>
+        <th>単価</th>
+        <th>小計</th>
+    </tr>
+    <% let total = 0; %> 
+    <% cart.map((product) => { %>
+        <tr>
+            <td><%= product.name %></td>
+            <td><%= amount[product.id] %></td>
+            <td><%= product.price %></td>
+            <td><%= product.price * amount[product.id] %></td>
+        </tr>
+        <% total += product.price * amount[product.id] %> 
+    <% }) %>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>合計</td>
+        <td><%= total %></td>
+    </tr>
+</table>
+<form action="/cart/finish" method="post">
+    <input type="submit" value="購入を確定">
+</form>
+
+<% include ../layout/footer %>
