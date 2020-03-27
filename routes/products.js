@@ -24,7 +24,7 @@ router.get('/:productId/', function(req, res, next) {
     order: [['createdAt', 'DESC']]
   };
   db.products.findOne(options).then((results) => {
-    res.render('products/show', { product: results, dateUtils: dateUtils });
+    res.render('products/show', { product: results, dateUtils: dateUtils, error: '' });
   });
 });
 

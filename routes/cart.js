@@ -4,6 +4,33 @@ const products = require('../models/index').products;
 const purchases = require('../models/index').purchases;
 const dateUtils = require('date-utils');
 
+router.post('/:productId', function(req, res) {
+  const id     = Number(req.params.productId),
+        amount = Number(req.body.amount),
+        options = {
+          where: {
+            id: id,
+            public_flg: 1
+          }
+        };
+  let error = '';
+
+  products.findOne({where: { id: id }}).then((product) => {
+    if (amount == 0 || isNaN(amount)) {
+      error = '個数を入力してください。';
+    } else if (product.stock < amount) {
+      error = '在庫が足りませんでした。';
+    }
+    if (!error) {
+      if (!req.session.cart) req.session.cart = [];
+      for (let i = 0; i < amount; i++) {
+        req.session.cart.push(id); 
+      }
+    }
+    res.render('products/show', { product: product, dateUtils: dateUtils, error: error });
+  });
+});
+
 /* GET products listing. */
 router.get('/', function(req, res, next) {
 
@@ -11,10 +38,12 @@ router.get('/', function(req, res, next) {
     res.redirect('/users/sign_in');
   }
 
-  req.session.cart = [1, 1, 2, 1, 3];
-
   const cart = req.session.cart;
   let amount = {};
+
+  if (!cart) {
+    res.render('cart/index', { cart: null, amount: null });
+  }
 
   // リストない重複を排除
   const productIdList = cart
