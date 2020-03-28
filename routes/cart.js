@@ -103,8 +103,14 @@ router.post('/finish', function(req, res, next) {
 });
 
 router.post('/:productId/', function(req, res) {
-  const id     = Number(req.params.productId),
-        amount = Number(req.body.amount),
+  
+  if (!req.user) {
+    res.redirect('/users/sign_in');
+  }
+
+  const id      = Number(req.params.productId),
+        amount  = Number(req.body.amount),
+        cart    = req.session.cart,
         options = {
           where: {
             id: req.params.productId,
@@ -113,10 +119,16 @@ router.post('/:productId/', function(req, res) {
         };
   let error = '';
 
+  let currentAmount = {};
+  for (var i in cart) {
+    var key = cart[i];
+    currentAmount[key] = (currentAmount[key])? currentAmount[key] + 1 : 1;
+  } 
+
   products.findOne(options).then((product) => {
     if (amount == 0 || isNaN(amount)) {
       error = '個数を入力してください。';
-    } else if (product.stock < amount) {
+    } else if (product.stock < amount + currentAmount[id]) {
       error = '在庫が足りませんでした。';
     }
     if (!error) {
@@ -125,6 +137,7 @@ router.post('/:productId/', function(req, res) {
         req.session.cart.push(id); 
       }
     }
+    console.log(req.session.cart);
     
     res.render('products/show', { product: product, dateUtils: dateUtils, error: error });
   });
