@@ -1,0 +1,36 @@
+<% include ../layout/header %>
+
+<h1>カートの中身</h1>
+<% if (cart) { %>
+    <table>
+        <tr>
+            <th>商品名</th>
+            <th>個数</th>
+            <th>単価</th>
+            <th>小計</th>
+        </tr>
+        <% let total = 0; %> 
+        <% cart.map((product) => { %>
+            <tr>
+                <td><%= product.name %></td>
+                <td><%= amount[product.id] %></td>
+                <td><%= product.price %></td>
+                <td><%= product.price * amount[product.id] %></td>
+            </tr>
+            <% total += product.price * amount[product.id] %> 
+        <% }) %>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>合計</td>
+            <td><%= total %></td>
+        </tr>
+    </table>
+    <form action="/cart/confirm" method="post">
+        <input type="submit" value="レジに進む">
+    </form>
+<% } else { %>
+    <p>カートにはまだ何も入っていません。</p>
+<% } %>
+
+<% include ../layout/footer %>

@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const cartRouter = require('./routes/cart');
 const productsRouter = require('./routes/products');
 const users = require('./models/index').users;
 
@@ -72,6 +73,7 @@ passport.deserializeUser((id, done) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
+app.use('/cart', cartRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

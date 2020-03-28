@@ -5,10 +5,20 @@
   <a href="/">商品一覧に戻る</a>
 <% } else { %>
   <h1><%= product.name %></h1>
+  <p><a href="/cart">カートを見る</a></p>
   <img src="<%= product.image %>" alt="<%= product.name %>">
   <p><%= product.price %>円</p>
   <p>残り<%= product.stock %>個</p>
   <p>最終更新日：<%= product.updatedAt.toFormat('YYYY年M月D日 HH時MI分') %></p>
+  <p>
+    <% if (error) { %>
+      <span><%= error %></span>
+    <% } %>
+    <form action="/cart/<%= product.id %>" method="post">
+      <input type="text" name="amount" id="amount">
+      <input type="submit" value="カートに追加する">
+    </form>
+  </p>
 <% } %>
 
 <% include ../layout/footer %>
