@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   }
 
   const cart = req.session.cart;
-  let amount = {};
+  let amountList = {};
 
   if (!cart) {
     res.render('cart/index', { cart: null, amount: null });
@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
   
   for (var i in cart) {
     var key = cart[i];
-    amount[key] = (amount[key])? amount[key] + 1 : 1;
+    amountList[key] = (amountList[key])? amountList[key] + 1 : 1;
   }
   
   const options = {
@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
   };
 
   products.findAll(options).then((results) => {
-    res.render('cart/index', { cart: results, amount: amount });
+    res.render('cart/index', { cart: results, amount: amountList });
   });
 });
 
@@ -43,7 +43,7 @@ router.post('/confirm', function(req, res, next) {
   }
 
   const cart = req.session.cart;
-  let amount = {};
+  let amountList = {};
 
   if (!cart) {
     res.redirect('/products');
@@ -55,7 +55,7 @@ router.post('/confirm', function(req, res, next) {
   
   for (var i in cart) {
     var key = cart[i];
-    amount[key] = (amount[key])? amount[key] + 1 : 1;
+    amountList[key] = (amountList[key])? amountList[key] + 1 : 1;
   }
   
   const options = {
@@ -63,7 +63,7 @@ router.post('/confirm', function(req, res, next) {
   };
 
   products.findAll(options).then((results) => {
-    res.render('cart/confirm', { cart: results, amount: amount });
+    res.render('cart/confirm', { cart: results, amount: amountList });
   });
 });
 
@@ -74,7 +74,7 @@ router.post('/finish', function(req, res, next) {
   }
 
   const cart = req.session.cart;
-  let amount = {};
+  let amountList = {};
 
   if (!cart) {
     res.redirect('/products');
@@ -82,20 +82,32 @@ router.post('/finish', function(req, res, next) {
 
   for (var i in cart) {
     var key = cart[i];
-    amount[key] = (amount[key])? amount[key] + 1 : 1;
+    amountList[key] = (amountList[key])? amountList[key] + 1 : 1;
   }
 
-  for (let k in amount) {
+  for (let k in amountList) {
     k = Number(k);
+    const amount = amountList[k];
+
     products.findOne({where: { id: k }}).then((product) => {
+      if (amount > product.stock) {
+        res.redirect('/products');
+      }
       const param = {
         product_id: k,
         user_id: req.user.id,
         price: product.price,
-        amount: amount[k]
+        amount: amount
       };
       
-      purchases.create(param);
+      purchases.create(param).then((result) => {
+        if (result && product) {
+          product.update({
+            stock: product.stock - amount
+          })
+        }
+      });
+
     });
   }
   delete req.session.cart;
@@ -103,7 +115,7 @@ router.post('/finish', function(req, res, next) {
 });
 
 router.post('/:productId/', function(req, res) {
-  
+
   if (!req.user) {
     res.redirect('/users/sign_in');
   }
@@ -137,7 +149,6 @@ router.post('/:productId/', function(req, res) {
         req.session.cart.push(id); 
       }
     }
-    console.log(req.session.cart);
     
     res.render('products/show', { product: product, dateUtils: dateUtils, error: error });
   });
