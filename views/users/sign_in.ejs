@@ -1,14 +1,51 @@
+<% include ../layout/header %>
 
-<form action="/users/sign_in" method="post">
-    <div>
-        <label>ユーザー名：</label>
-        <input type="text" name="username"/>
+<div class="container my-5 py-5 z-depth-1">
+
+  <!--Section: Content-->
+  <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+
+    <!--Grid row-->
+    <div class="row d-flex justify-content-center">
+
+      <!--Grid column-->
+      <div class="col-md-6">
+
+        <!-- Default form subscription -->
+        <form class="text-center" action="/users/sign_in" method="POST">
+
+          <p class="h4 mb-4">ログイン</p>
+
+          <!-- Name -->
+          <input name="username" type="text" id="username" class="form-control mb-4" placeholder="ユーザー名">
+
+          <!-- Password -->
+          <input name="password" type="password" id="password" class="form-control mb-4" placeholder="パスワード">
+
+          <!-- Sign in button -->
+          <button class="btn btn-info btn-block" type="submit">ログイン</button>
+
+          <div class="pt-3">
+            <p>会員登録がお済みでなければ会員登録から先に済ませてください</p>
+            <p>
+              <a href="/users/sign_up">新規会員登録</a>
+            </p>
+          </div>
+
+
+        </form>
+        <!-- Default form subscription -->
+
+      </div>
+      <!--Grid column-->
+
     </div>
-    <div>
-        <label>パスワード：</label>
-        <input type="password" name="password"/>
-    </div>
-    <div>
-        <input type="submit" value="ログイン"/>
-    </div>
-</form>
+    <!--Grid row-->
+
+
+  </section>
+  <!--Section: Content-->
+
+</div>
+
+<% include ../layout/footer %>

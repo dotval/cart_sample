@@ -1,36 +1,101 @@
 <% include ../layout/header %>
 
-<h1>カートの中身</h1>
-<% if (cart) { %>
-    <table>
-        <tr>
-            <th>商品名</th>
-            <th>個数</th>
-            <th>単価</th>
-            <th>小計</th>
-        </tr>
-        <% let total = 0; %> 
-        <% cart.map((product) => { %>
+<div class="container my-5 py-3 z-depth-1 rounded">
+  <% if (cart) { %>
+    <!--Section: Content-->
+    <section class="dark-grey-text">
+
+      <!-- Shopping Cart table -->
+      <div class="table-responsive">
+
+        <table class="table product-table mb-0">
+
+          <!-- Table head -->
+          <thead class="mdb-color lighten-5">
             <tr>
-                <td><%= product.name %></td>
-                <td><%= amount[product.id] %></td>
-                <td><%= product.price %></td>
-                <td><%= product.price * amount[product.id] %></td>
+              <th></th>
+              <th class="font-weight-bold">
+                <strong>商品名</strong>
+              </th>
+              <th></th>
+              <th class="font-weight-bold">
+                <strong>値段</strong>
+              </th>
+              <th class="font-weight-bold">
+                <strong>個数</strong>
+              </th>
+              <th class="font-weight-bold">
+                <strong>小計</strong>
+              </th>
+              <th></th>
             </tr>
-            <% total += product.price * amount[product.id] %> 
-        <% }) %>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>合計</td>
-            <td><%= total %></td>
-        </tr>
-    </table>
-    <form action="/cart/confirm" method="post">
-        <input type="submit" value="レジに進む">
-    </form>
-<% } else { %>
-    <p>カートにはまだ何も入っていません。</p>
-<% } %>
+          </thead>
+          <!-- /.Table head -->
+
+          <!-- Table body -->
+          <tbody>
+
+            <% let total = 0; %>
+            <% cart.map((product) => { %>
+              <tr>
+                <th scope="row">
+                  <img src="<%= product.image %>" alt="<%= product.name %>" width="180" class="img-fluid z-depth-0">
+                </th>
+                <td>
+                  <strong><%= product.name %></strong>
+                </td>
+                <td></td>
+                <td>¥<%= product.price %></td>
+                <td>
+                  <input type="number" value="<%= amount[product.id] %>" aria-label="Search" class="form-control" style="width: 100px">
+                </td>
+                <td class="font-weight-bold">
+                  <strong>¥<%= product.price * amount[product.id] %></strong>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top"
+                    title="Remove item">X
+                  </button>
+                </td>
+              </tr>
+            <% total += product.price * amount[product.id] %>
+            <% }) %>
+
+            <tr>
+              <td colspan="3"></td>
+              <td>
+                <h4 class="mt-2">
+                  <strong>合計</strong>
+                </h4>
+              </td>
+              <td class="text-right">
+                <h4 class="mt-2">
+                  <strong>¥<%= total %></strong>
+                </h4>
+              </td>
+              <td colspan="3" class="text-right">
+                <form action="/cart/confirm" method="post">
+                  <input type="submit" class="btn btn-primary btn-rounded" value="レジに進む">
+                </form>
+              </td>
+            </tr>
+            <!-- Fourth row -->
+
+          </tbody>
+          <!-- /.Table body -->
+
+        </table>
+
+      </div>
+      <!-- /.Shopping Cart table -->
+
+    </section>
+    <!--Section: Content-->
+
+    <% } else { %>
+      <p>カートにはまだ何も入っていません。</p>
+    <% } %>
+
+</div>
 
 <% include ../layout/footer %>

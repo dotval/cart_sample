@@ -1,24 +1,75 @@
 <% include ../layout/header %>
 
-<% if (product == null) { %>
-  <p>この商品は削除されたか、非公開の商品です。</p>
-  <a href="/">商品一覧に戻る</a>
-<% } else { %>
-  <h1><%= product.name %></h1>
-  <p><a href="/cart">カートを見る</a></p>
-  <img src="<%= product.image %>" alt="<%= product.name %>">
-  <p><%= product.price %>円</p>
-  <p>残り<%= product.stock %>個</p>
-  <p>最終更新日：<%= product.updatedAt.toFormat('YYYY年M月D日 HH時MI分') %></p>
-  <p>
-    <% if (error) { %>
-      <span><%= error %></span>
-    <% } %>
-    <form action="/cart/<%= product.id %>" method="post">
-      <input type="text" name="amount" id="amount">
-      <input type="submit" value="カートに追加する">
-    </form>
-  </p>
-<% } %>
+<div class="container my-5 py-5 z-depth-1">
+
+  <% if (product !== null) { %>
+  <!--Section: Content-->
+  <section class="text-center">
+
+    <!-- Section heading -->
+    <h3 class="font-weight-bold mb-5">商品詳細</h3>
+
+    <div class="row">
+
+      <div class="col-lg-6">
+
+        <!--Thumbnails-->
+        <div class="text-center text-md-left" role="listbox">
+          <img src="<%= product.image %>" alt="<%= product.name %>" class="img-fluid">
+        </div>
+        <!--/.Thumbnails-->
+
+      </div>
+
+      <div class="col-lg-5 text-center text-md-left">
+
+        <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-grey-text mb-1 ml-xl-0 ml-4">
+          <strong><%= product.name %></strong>
+        </h2>
+        <span class="badge badge-danger product mb-4 ml-xl-0 ml-4">ベストセラー</span>
+        <h3 class="h3-responsive text-center text-md-left mb-5 ml-xl-0 ml-4">
+          <span class="red-text font-weight-bold">
+            <strong>¥<%= product.price %></strong>
+          </span>
+        </h3>
+
+        <!-- Add to Cart -->
+        <section class="color">
+          <div class="mt-5">
+            <form action="/cart/<%= product.id %>" method="post">
+              <p class="grey-text">数を選択する</p>
+              <div class="def-number-input number-input safari_only">
+                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+                <input class="amount" min="0" name="amount" value="1" type="number">
+                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-md-12 text-center text-md-left text-md-right">
+                  <button class="btn btn-primary btn-rounded">
+                    <i class="fas fa-cart-plus mr-2" aria-hidden="true"></i> カートに追加する</button>
+                  <% if (error) { %>
+                    <span class="text-danger"><%= error %></span>
+                  <% } %>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+        <!-- /.Add to Cart -->
+
+      </div>
+
+    </div>
+
+  </section>
+  <!--Section: Content-->
+  <% } else { %>
+    <p class="text-center">
+      この商品は削除されたか、非公開の商品です。<br>
+      <a href="/products">商品一覧に戻る</a>
+    </p>
+  <% } %>
+</div>
 
 <% include ../layout/footer %>
