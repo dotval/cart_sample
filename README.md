@@ -1,6 +1,8 @@
 # Node + Expressで作られたシンプルなECサイト
 
--- スクリーンショット
+<img src="https://github.com/gs-create/cart_sample/blob/master/public/images/products_top.png">
+<img src="https://github.com/gs-create/cart_sample/blob/master/public/images/products_show.png">
+<img src="https://github.com/gs-create/cart_sample/blob/master/public/images/cart_top.png">
 
 
 ## 開発環境
@@ -33,9 +35,25 @@ npm install
 
 3. DB作成
 
-各自の環境に合わせてDB`cart_sample`を作成する
+各自の環境に合わせる
 
-4. 起動
+```
+npx sequelize-cli db:create
+```
+
+4. マイグレーション
+
+```
+npx sequelize-cli db:migrate
+```
+
+5. シード
+
+```
+npx sequelize-cli db:seed:all
+```
+
+6. 起動
 
 ```
 npm start
@@ -58,7 +76,6 @@ npm start
     - purchases:
         - index: 購入履歴一覧
 - users: ユーザー
-    - index: マイページ
     - sign_up: 会員登録
     - sign_in: ログイン
     - sign_out: ログアウト
@@ -186,7 +203,7 @@ npm start
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
+        <td>UNIQUE</td>
     </tr>
     <tr>
         <th>admin_flg</th>
@@ -204,7 +221,7 @@ npm start
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
+        <td>UNIQUE</td>
     </tr>
     <tr>
         <th>password</th>
@@ -262,7 +279,7 @@ npm start
         <td>20</td>
         <td></td>
         <td></td>
-        <td></td>
+        <td>MUL</td>
         <td></td>
     </tr>
     <tr>
@@ -271,7 +288,7 @@ npm start
         <td>20</td>
         <td></td>
         <td></td>
-        <td></td>
+        <td>MUL</td>
         <td></td>
     </tr>
     <tr>
